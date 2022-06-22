@@ -43,8 +43,8 @@ function onGetUserPos() {
             document.querySelector(
                 '.user-pos'
             ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`;
-            console.log(pos.coords);
             mapService.addMarker(pos.coords);
+            mapService.panTo(pos.coords.latitude, pos.coords.longitude);
         })
         .catch((err) => {
             console.log('err!!!', err);
