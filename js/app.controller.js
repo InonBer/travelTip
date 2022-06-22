@@ -8,7 +8,7 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onRemoveCard = onRemoveCard
 window.goToCardLocation = goToCardLocation
-
+window.onSearchedInput = onSearchedInput
 function onInit() {
     mapService
         .initMap()
@@ -37,15 +37,26 @@ function goToCardLocation(lat, lng) {
     mapService.panTo(lat, lng);
 
 }
+function onSearchedInput(ev, input) {
+    ev.preventDefault()
+    mapService.getLocationBySearchTerm(input)
+        .then(res => {
+            console.log(res);
+            mapService.panTo(res.geometry.location.lat, res.geometry.location.lng)
+        })
+
+}
 
 function onGetLocs() {
     locService.getLocs()
         .then(locs => {
             document.querySelector('.locations').innerHTML = locs.map(loc => {
+                console.log(loc);
                 return `<div class="location-card">
                         <header class="card-header">${loc.title}</header>
                         <p>lat: ${JSON.stringify(loc.position.lat)}</p>
                         <p>lng: ${JSON.stringify(loc.position.lng)}</p>
+                        <p>Created At: ${loc.createdAt}</p>
                         <button class="card-btn" onclick="onRemoveCard(${JSON.stringify(loc.id)})">X</button>
                         <button class="card-btn" onclick="goToCardLocation(${JSON.stringify(loc.position.lat)}, ${JSON.stringify(loc.position.lng)})">Go To</button>
                         </div>
@@ -63,7 +74,10 @@ function onRemoveCard(id) {
 
         }
         )
-    onGetLocs()
+    setTimeout(() => {
+
+        onGetLocs()
+    }, 250)
 }
 
 function onGetUserPos() {
@@ -73,7 +87,7 @@ function onGetUserPos() {
             document.querySelector(
                 '.user-pos'
             ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`;
-            mapService.addMarker(pos.coords);
+            mapService.addMarker(pos.coords, 'Self');
             mapService.panTo(pos.coords.latitude, pos.coords.longitude);
         })
         .catch((err) => {

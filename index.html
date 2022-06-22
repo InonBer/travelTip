@@ -2,26 +2,41 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TravelTip</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelTip</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-  <h1>TravelTip Starter</h1>
-  <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
-  <button onclick="onGetUserPos()" class="btn-user-pos">My Location</button>
-  <button onclick="onGetLocs()" class="btn-get-locs">My Locations</button>
-  <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button>
-  <input id="pac-input" class="controls" type="text" placeholder="Search Location" />
-  <p>You are at: <span class="user-pos"></span></p>
-  <div id="map" style="width: 100%; height: 400px;"></div>
-  <div>
+    <section class="main-container" >
+        <h1 class="container-header">TravelTip Starter</h1>
+    <div class="map" id="map" style="width: 90%; height: 400px;"></div>
+    <div class="input-self">
+        <form onsubmit="onSearchedInput(event,p.value)" action="">
+            <input name="p" id="pac-input" class="controls" type="text" placeholder="Search Box"/>
+            <button>Search</button>
+        </form>
+        <button onclick="onGetUserPos()" class="btn-user-pos"> My Position</button>
+    </div>
+    <div class="btn-container"> 
+    <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
+    <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button>
+    <button onclick="onPanTo()"class="btn-pan">Pan Map to Tokyo</button>
+</div>
+    <p>You are at: <span class="user-pos"></span></p>
+    <div class="locations-container">
     <header>Locations:</header>
-    <section class="locations"></section>
-  </div>
-  <!-- <p>Locations: <span class="locs"></span></p> -->
-  <script type="module" src="js/app.controller.js"></script>
+    <section class="locations">
+
+
+    </section>
+    </div>
+</section>
+    <!-- <p>Locations: <span class="locs"></span></p> -->
+    
+    <script src="lib/axios.js"></script>
+    <script type="module" src="js/app.controller.js"></script>
 </body>
 
 </html>
