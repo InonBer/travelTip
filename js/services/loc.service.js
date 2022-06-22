@@ -20,7 +20,7 @@ function getLocs() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(locs);
-        }, 250)
+        }, 500)
     });
 }
 function getStorageKey() {
@@ -48,7 +48,8 @@ function makeLoc({ title, id, position }) {
     locs[id] = {
         title,
         id,
-        position
+        position,
+        createdAt: new Date()
     }
     saveToStorage(STORAGE_KEY, locs)
 }

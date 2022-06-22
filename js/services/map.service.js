@@ -8,6 +8,8 @@ export const mapService = {
     panTo
 }
 var gMap;
+const idStorage = 'idDB'
+var gId = locService.loadFromStorage(idStorage) || 0
 // gMap.addListener(gMap, "click", function (event) {
 //     var place = addMarker(event.latLng, map);
 //     console.log(place);
@@ -37,20 +39,18 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
     });
 }
 
-function addMarker(loc) {
-    var locs = locService.getLocs().then(res => {
-        var gId = res.length
+function addMarker(loc, title = prompt('txt')) {
 
 
-        var marker = new google.maps.Marker({
-            position: loc,
-            map: gMap,
-            title: prompt('txt'),
-            id: gId++
-        });
-        locService.makeLoc(marker)
-        return marker;
-    })
+    var marker = new google.maps.Marker({
+        position: loc,
+        map: gMap,
+        title,
+        id: gId++
+    });
+    locService.makeLoc(marker)
+    locService.saveToStorage(idStorage, gId)
+    return marker;
 }
 
 function panTo(lat, lng) {
