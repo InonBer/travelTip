@@ -98,3 +98,20 @@ function getLocationBySearchTerm(SearchTerm) {
             return res;
         });
 }
+
+function getWeatherByLatLng(lan, lat) {
+    if (weatherCache[input]) {
+        console.log('No need to fetch, retrieving from Cache');
+        return Promise.resolve(weatherCache[input]);
+    }
+    const API_KEY = '29c904ee41c976a974e539b084bd9304';
+
+    return axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lan}&appid=${API_KEY}`)
+        .then((res) => res.data.query.search[0])
+        .then((res) => {
+            weatherCache[input] = res;
+            saveToStorage(WIKI_KEY, weatherCache);
+            return res;
+        });
+}
