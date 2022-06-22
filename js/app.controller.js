@@ -6,6 +6,8 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
+window.onRemoveCard = onRemoveCard
+window.goToCardLocation = goToCardLocation
 
 
 function onInit() {
@@ -29,12 +31,39 @@ function onAddMarker() {
     mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
 }
 
+function goToCardLocation(lat, lng) {
+    console.log(lat);
+    console.log(lng);
+    mapService.panTo(lat, lng);
+
+}
+
 function onGetLocs() {
     locService.getLocs()
         .then(locs => {
-            console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs)
+            document.querySelector('.locations').innerHTML = locs.map(loc => {
+                return `<div class="location-card">
+                        <header class="card-header">${loc.title}</header>
+                        <p>lat: ${JSON.stringify(loc.position.lat)}</p>
+                        <p>lng: ${JSON.stringify(loc.position.lng)}</p>
+                        <button class="card-btn" onclick="onRemoveCard(${JSON.stringify(loc.id)})">X</button>
+                        <button class="card-btn" onclick="goToCardLocation(${JSON.stringify(loc.position.lat)}, ${JSON.stringify(loc.position.lng)})">Go To</button>
+                        </div>
+                        `
+            })
         })
+}
+
+function onRemoveCard(id) {
+    var locs = locService.getLocs()
+        .then(locs => {
+            console.log(locs);
+            locs.splice(id, 1)
+            locService.onReturnNewLocs(locs)
+
+        }
+        )
+    onGetLocs()
 }
 
 function onGetUserPos() {

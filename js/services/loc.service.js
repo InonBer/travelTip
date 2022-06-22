@@ -3,7 +3,8 @@ export const locService = {
     getStorageKey,
     saveToStorage,
     loadFromStorage,
-    makeLoc
+    makeLoc,
+    onReturnNewLocs
 }
 
 const STORAGE_KEY = 'locsDB'
@@ -13,13 +14,13 @@ const STORAGE_KEY = 'locsDB'
 //     { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
 // ]
 
-const locs = loadFromStorage(STORAGE_KEY) || {}
+var locs = loadFromStorage(STORAGE_KEY) || []
 
 function getLocs() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(locs);
-        }, 2000)
+        }, 250)
     });
 }
 function getStorageKey() {
@@ -34,7 +35,20 @@ function loadFromStorage(key) {
     var val = localStorage.getItem(key);
     return JSON.parse(val);
 }
+function onReturnNewLocs(newLocs) {
+    console.log(newLocs);
+    // newLocs.then(newLoc => {
+    locs = newLocs
+    localStorage.clear()
+    saveToStorage(STORAGE_KEY, locs)
+    // })
+}
 
 function makeLoc({ title, id, position }) {
-
+    locs[id] = {
+        title,
+        id,
+        position
+    }
+    saveToStorage(STORAGE_KEY, locs)
 }

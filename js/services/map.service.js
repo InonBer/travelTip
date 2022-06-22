@@ -1,13 +1,12 @@
 
 
-
+import { utils } from './utils.js';
+import { locService } from './loc.service.js'
 export const mapService = {
     initMap,
     addMarker,
     panTo
 }
-import { locService } from './loc.service.js'
-var gId = 0
 var gMap;
 // gMap.addListener(gMap, "click", function (event) {
 //     var place = addMarker(event.latLng, map);
@@ -42,19 +41,19 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
 }
 
 function addMarker(loc) {
-    var marker = new google.maps.Marker({
-        position: loc,
-        map: gMap,
-        title: prompt('txt'),
-        id: gId++
-    });
-    locService.makeLoc(marker)
-    // locService.getLocs().then((locs) => {
-    //     var key = locService.getStorageKey()
-    //     locs[marker.id] = marker
-    //     locService.saveToStorage(key, locs)
-    // })
-    return marker;
+    var locs = locService.getLocs().then(res => {
+        var gId = res.length
+
+
+        var marker = new google.maps.Marker({
+            position: loc,
+            map: gMap,
+            title: prompt('txt'),
+            id: gId++
+        });
+        locService.makeLoc(marker)
+        return marker;
+    })
 }
 
 function panTo(lat, lng) {
