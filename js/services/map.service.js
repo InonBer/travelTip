@@ -1,11 +1,13 @@
 
 
+
 export const mapService = {
     initMap,
     addMarker,
     panTo
 }
-
+import { locService } from './loc.service.js'
+var gId = 0
 var gMap;
 // gMap.addListener(gMap, "click", function (event) {
 //     var place = addMarker(event.latLng, map);
@@ -25,6 +27,15 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             gMap.addListener('click', function (event) {
                 addMarker(event.latLng)
                 console.log(event);
+                // var input = document.getElementById("pac-input");
+                // var searchBox = new google.maps.places.SearchBox(input);
+                // gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                // // Bias the SearchBox results towards current map's viewport.
+                // gMap.addListener("bounds_changed", function () {
+                //     searchBox.setBounds(gMap.getBounds());
+
+
+                // });
             })
             console.log('Map!', gMap);
         })
@@ -34,12 +45,20 @@ function addMarker(loc) {
     var marker = new google.maps.Marker({
         position: loc,
         map: gMap,
-        title: 'Hello World!'
+        title: prompt('txt'),
+        id: gId++
     });
+    locService.makeLoc(marker)
+    // locService.getLocs().then((locs) => {
+    //     var key = locService.getStorageKey()
+    //     locs[marker.id] = marker
+    //     locService.saveToStorage(key, locs)
+    // })
     return marker;
 }
 
 function panTo(lat, lng) {
+    console.log(lat, lng);
     var laLatLng = new google.maps.LatLng(lat, lng);
     gMap.panTo(laLatLng);
 }
@@ -59,4 +78,3 @@ function _connectGoogleApi() {
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
-
