@@ -11,10 +11,13 @@
 <body>
     <section class="main-container" >
         <h1 class="container-header">TravelTip Starter</h1>
-    <div class="map" id="map" style="width: 100%; height: 400px;"></div>
+    <div class="map" id="map" style="width: 90%; height: 400px;"></div>
     <div class="input-self">
-        <input id="pac-input" class="controls" type="text" placeholder="Search Box"/>
-        <button onclick="onGetUserPos()" class="btn-user-pos">Get User Position</button>
+        <form onsubmit="onSearchedInput(event,p.value)" action="">
+            <input name="p" id="pac-input" class="controls" type="text" placeholder="Search Box"/>
+            <button>Search</button>
+        </form>
+        <button onclick="onGetUserPos()" class="btn-user-pos"> My Position</button>
     </div>
     <div class="btn-container"> 
     <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
@@ -32,7 +35,7 @@
 </section>
     <!-- <p>Locations: <span class="locs"></span></p> -->
     
-
+    <script src="lib/axios.js"></script>
     <script type="module" src="js/app.controller.js"></script>
 </body>
 

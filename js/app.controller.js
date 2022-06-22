@@ -8,7 +8,7 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onRemoveCard = onRemoveCard
 window.goToCardLocation = goToCardLocation
-
+window.onSearchedInput = onSearchedInput
 function onInit() {
     mapService
         .initMap()
@@ -35,6 +35,15 @@ function goToCardLocation(lat, lng) {
     console.log(lat);
     console.log(lng);
     mapService.panTo(lat, lng);
+
+}
+function onSearchedInput(ev, input) {
+    ev.preventDefault()
+    mapService.getLocationBySearchTerm(input)
+        .then(res => {
+            console.log(res);
+            mapService.panTo(res.geometry.location.lat, res.geometry.location.lng)
+        })
 
 }
 

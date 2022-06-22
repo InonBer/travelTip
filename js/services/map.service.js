@@ -4,6 +4,7 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
+    getLocationBySearchTerm,
 };
 var gMap;
 const idStorage = 'idDB'
@@ -65,39 +66,35 @@ function _connectGoogleApi() {
 //? https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBVOa39S6zjJc0kQ4YTgXUOP4DJ3a-XzI0
 //? https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
 
-function getLocationByLatLng(lan, lat) {
-    if (wikiCache[input]) {
-        console.log('No need to fetch, retrieving from Cache');
-        return Promise.resolve(wikiCache[input]);
-    }
-    const API_KEY = 'AIzaSyCxgGZMqJNGhy6HHjbcV7-XkRbkEgvuOzI';
+// function getLocationByLatLng(lan, lat) {
+//     if (wikiCache[input]) {
+//         console.log('No need to fetch, retrieving from Cache');
+//         return Promise.resolve(wikiCache[input]);
+//     }
+//     const API_KEY = 'AIzaSyCxgGZMqJNGhy6HHjbcV7-XkRbkEgvuOzI';
 
-    return axios
-        .get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lan}&key=${API_KEY}`)
-        .then((res) => res.data.query.search[0])
-        .then((res) => {
-            wikiCache[input] = res;
-            saveToStorage(WIKI_KEY, wikiCache);
-            return res;
-        });
-}
+//     return axios
+//         .get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lan}&key=${API_KEY}`)
+//         .then((res) => res.data.query.search[0])
+//         .then((res) => {
+//             wikiCache[input] = res;
+//             saveToStorage(WIKI_KEY, wikiCache);
+//             return res;
+//         });
+// }
 
 function getLocationBySearchTerm(SearchTerm) {
-    if (wikiCache[SearchTerm]) {
-        console.log('No need to fetch, retrieving from Cache');
-        return Promise.resolve(wikiCache[input]);
-    }
-    const API_KEY = 'AIzaSyCxgGZMqJNGhy6HHjbcV7-XkRbkEgvuOzI';
 
+    const API_KEY = 'AIzaSyD7Ae9Rat826pDbs1ri9kbUQJUCIXTriCQ';
+    // AIzaSyD7Ae9Rat826pDbs1ri9kbUQJUCIXTriCQ
+    //AIzaSyD7Ae9Rat826pDbs1ri9kbUQJUCIXTriCQ
     return axios
         .get(
             `https://maps.googleapis.com/maps/api/geocode/json?address=${SearchTerm}&key=${API_KEY}`
             // `https://maps.googleapis.com/maps/api/geocode/json?address=central+park&key=AIzaSyBVOa39S6zjJc0kQ4YTgXUOP4DJ3a-XzI0`
         )
-        .then((res) => res.data.query.search[0])
+        .then((res) => res.data.results[0])
         .then((res) => {
-            wikiCache[input] = res;
-            saveToStorage(WIKI_KEY, wikiCache);
             return res;
         });
 }
